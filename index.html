@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fim de Semana ♡ Emili & Pedro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:        #e8a0b4;
+      --rose-deep:   #c4677e;
+      --rose-light:  #f7dfe7;
+      --blush:       #fdf0f4;
+      --cream:       #fdf8f5;
+      --text:        #3d2530;
+      --text-soft:   #7a4f5e;
+      --gold:        #c9a96e;
+      --white:       #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── PETAL CANVAS ─── */
+    #petals-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(160deg, #fff0f5 0%, #fdf8f5 50%, #fce8ef 100%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(232,160,180,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(196,103,126,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.65rem, 2vw, 0.8rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 10vw, 7rem);
+      line-height: 1.05;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 1s 0.55s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose-deep);
+    }
+
+    .hero-heart {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      margin: 1.4rem 0;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards, pulse 2.4s 1.8s ease-in-out infinite;
+      display: block;
+    }
+
+    .hero-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--text-soft);
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeIn 1s 2s forwards;
+    }
+
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+    }
+
+    .scroll-arrow {
+      width: 18px;
+      height: 18px;
+      border-right: 1.5px solid var(--rose-deep);
+      border-bottom: 1.5px solid var(--rose-deep);
+      transform: rotate(45deg);
+      animation: bounce 1.4s ease-in-out infinite;
+    }
+
+    /* ─── COUNTDOWN ─── */
+    .countdown-section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+      text-align: center;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--rose-light) 100%);
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 3rem;
+    }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: clamp(0.8rem, 3vw, 2rem);
+      flex-wrap: wrap;
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .countdown-box {
+      width: clamp(72px, 18vw, 110px);
+      height: clamp(72px, 18vw, 110px);
+      background: var(--white);
+      border: 1px solid rgba(196,103,126,0.2);
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(196,103,126,0.1), 0 1px 4px rgba(0,0,0,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(247,223,231,0.4) 0%, transparent 60%);
+    }
+
+    .countdown-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 300;
+      color: var(--rose-deep);
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .countdown-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      font-weight: 400;
+    }
+
+    .countdown-arrived {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-style: italic;
+      color: var(--rose-deep);
+      padding: 1rem;
+    }
+
+    /* ─── MESSAGE ─── */
+    .message-section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+      background: var(--white);
+      display: flex;
+      justify-content: center;
+    }
+
+    .message-card {
+      max-width: 680px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    .message-card::before,
+    .message-card::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      margin: 0 auto 2rem;
+    }
+
+    .message-card::after {
+      margin: 2rem auto 0;
+    }
+
+    .message-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.25rem, 3.5vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .message-signature {
+      margin-top: 1.8rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+    }
+
+    /* ─── PHOTO PLACEHOLDER ─── */
+    .photo-section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      background: var(--blush);
+    }
+
+    .photo-frame {
+      width: clamp(260px, 70vw, 400px);
+      aspect-ratio: 4/5;
+      border: 1px solid rgba(196,103,126,0.25);
+      border-radius: 1.5rem;
+      background: #f9e8ef;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      box-shadow: 0 8px 40px rgba(196,103,126,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,160,180,0.3), transparent 70%);
+    }
+
+    .photo-icon {
+      font-size: 3rem;
+      opacity: 0.4;
+    }
+
+    .photo-hint {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-soft);
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    .photo-hint small {
+      display: block;
+      font-family: 'Jost', sans-serif;
+      font-style: normal;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-top: 0.4rem;
+      opacity: 0.7;
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline-section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 1.5rem;
+      background: var(--white);
+    }
+
+    .timeline-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .timeline-day {
+      margin-bottom: 3.5rem;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .day-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--rose), transparent);
+    }
+
+    .day-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      white-space: nowrap;
+    }
+
+    .day-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+
+    .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .events-list::before {
+      content: '';
+      position: absolute;
+      left: 0.55rem;
+      top: 0.6rem;
+      bottom: 0.6rem;
+      width: 1px;
+      background: linear-gradient(180deg, var(--rose), var(--rose-light));
+    }
+
+    .event-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 0.9rem 0;
+      position: relative;
+    }
+
+    .event-dot {
+      position: absolute;
+      left: -1.45rem;
+      top: 1.25rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--rose-deep);
+      flex-shrink: 0;
+    }
+
+    .event-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--rose-deep);
+      min-width: 54px;
+      padding-top: 0.05rem;
+    }
+
+    .event-content {}
+
+    .event-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+
+    .event-desc {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      line-height: 1.55;
+    }
+
+    .event-emoji {
+      font-size: 1rem;
+      margin-right: 0.3rem;
+    }
+
+    /* ─── AIRBNB CARD ─── */
+    .place-section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 1.5rem 5rem;
+      background: var(--blush);
+      text-align: center;
+    }
+
+    .place-card {
+      max-width: 480px;
+      margin: 2rem auto 0;
+      background: var(--white);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(196,103,126,0.13);
+      border: 1px solid rgba(196,103,126,0.15);
+    }
+
+    .place-card-top {
+      background: linear-gradient(135deg, #f4c2d0 0%, #e8a0b4 100%);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .place-card-top::before {
+      content: '🏠';
+      position: absolute;
+      font-size: 6rem;
+      right: -1rem;
+      bottom: -1rem;
+      opacity: 0.15;
+    }
+
+    .place-card-top-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 0.5rem;
+    }
+
+    .place-card-top-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .place-card-body {
+      padding: 1.8rem 2rem;
+    }
+
+    .place-info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .place-info-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .place-info-text {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .place-info-text strong {
+      display: block;
+      font-weight: 500;
+      color: var(--text);
+      font-size: 0.9rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .place-btn {
+      display: inline-block;
+      margin-top: 0.8rem;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, var(--rose-deep), #a3465a);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 3rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(196,103,126,0.35);
+    }
+
+    .place-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(196,103,126,0.4);
+    }
+
+    /* ─── CARTA DE AMOR ─── */
+    .love-letter-section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 1.5rem;
+      background: linear-gradient(160deg, #fff0f5 0%, #fdf8f5 60%, #fce8ef 100%);
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .love-letter-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 15% 20%, rgba(232,160,180,0.2) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 70% at 85% 80%, rgba(196,103,126,0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .love-letter-inner {
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    .love-letter-deco {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--rose);
+      opacity: 0.5;
+      margin-bottom: 1.2rem;
+      animation: pulse 2.8s ease-in-out infinite;
+      display: block;
+    }
+
+    .love-letter-deco--bottom {
+      margin-top: 2.5rem;
+      margin-bottom: 0;
+    }
+
+    .love-letter-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 1rem;
+    }
+
+    .love-letter-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+      line-height: 1;
+    }
+
+    .love-letter-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .love-letter-body p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    .love-letter-body em {
+      font-style: italic;
+      color: var(--rose-deep);
+    }
+
+    .love-letter-body strong {
+      font-weight: 600;
+      color: var(--rose-deep);
+    }
+
+    .love-letter-highlight {
+      margin-top: 1rem;
+      padding: 2rem 2.5rem;
+      border: 1px solid rgba(196,103,126,0.25);
+      border-radius: 1rem;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+      font-family: 'Cormorant Garamond', serif !important;
+      font-size: clamp(1.2rem, 3.5vw, 1.6rem) !important;
+      font-style: italic;
+      line-height: 1.9 !important;
+      color: var(--rose-deep) !important;
+      box-shadow: 0 4px 24px rgba(196,103,126,0.1);
+    }
+
+    .love-letter-music-ref {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      opacity: 0.7;
+      margin-bottom: 2rem;
+    }
+
+    .love-letter-music-ref em {
+      font-style: italic;
+      text-transform: none;
+    }
+
+    .love-letter-sign {
+      margin-top: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-soft);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 1.5rem;
+      text-align: center;
+      background: linear-gradient(180deg, var(--white) 0%, var(--rose-light) 100%);
+    }
+
+    .footer-hearts {
+      font-size: 1.5rem;
+      letter-spacing: 0.5rem;
+      margin-bottom: 1rem;
+      animation: pulse 2.4s ease-in-out infinite;
+      display: block;
+    }
+
+    .footer-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      color: var(--text-soft);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.12); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+
+    /* ─── REVEAL ON SCROLL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 480px) {
+      .events-list { padding-left: 1.6rem; }
+      .countdown-grid { gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">16 & 17 de maio de 2026</p>
+    <h1 class="hero-title">
+      <em>Emili</em><br>&amp; Pedro
+    </h1>
+    <span class="hero-heart">🌸</span>
+    <p class="hero-date">Um fim de semana só nosso</p>
+
+    <div class="scroll-hint">
+      <span>role</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="countdown-section">
+    <p class="section-label reveal">faltam apenas</p>
+    <h2 class="section-title reveal">Contagem até o nosso reencontro ✨</h2>
+    <div class="countdown-grid reveal" id="countdown-grid">
+      <div class="countdown-item">
+        <div class="countdown-box"><span class="countdown-number" id="cd-days">--</span></div>
+        <span class="countdown-label">dias</span>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-box"><span class="countdown-number" id="cd-hours">--</span></div>
+        <span class="countdown-label">horas</span>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-box"><span class="countdown-number" id="cd-mins">--</span></div>
+        <span class="countdown-label">minutos</span>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-box"><span class="countdown-number" id="cd-secs">--</span></div>
+        <span class="countdown-label">segundos</span>
+      </div>
+    </div>
+    <p class="countdown-arrived" id="cd-arrived" style="display:none;">
+      🌸 O momento chegou — te amo muito! 🌸
+    </p>
+  </section>
+
+  <!-- MENSAGEM -->
+  <section class="message-section">
+    <div class="message-card reveal">
+      <p class="section-label">uma mensagem pra você</p>
+      <blockquote class="message-quote">
+        Emili, existem fins de semana que a gente guarda dentro do peito pra sempre.
+        Esse vai ser um deles. Não precisa ser perfeito — só precisa ser
+        com você. Cada momentinho planejado aqui foi pensado com muito carinho,
+        porque você merece sentir o quanto é amada em cada detalhe.
+        Mal posso esperar pra te abraçar de verdade.
+      </blockquote>
+      <p class="message-signature">— com todo o meu amor, Pedro 🌹</p>
+    </div>
+  </section>
+
+  <!-- FOTO -->
+  <section class="photo-section">
+    <div class="photo-frame reveal">
+      <img src="e.jpeg" alt="Emili e Pedro" style="width:100%;height:100%;object-fit:cover;border-radius:1.5rem;display:block;" />
+    </div>
+  </section>
+
+  <!-- TIMELINE DIA 16 -->
+  <section class="timeline-section">
+    <div class="timeline-inner">
+
+      <div class="timeline-day reveal">
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <p class="section-label">sexta-feira</p>
+          <h2 class="day-title">16 de Maio — A chegada 🌙</h2>
+        </div>
+        <div class="day-header">
+          <div class="day-line"></div>
+          <span class="day-tag">nossa noite</span>
+          <div class="day-line" style="background:linear-gradient(90deg,transparent,var(--rose))"></div>
+        </div>
+
+        <div class="events-list">
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">15h00</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🏠</span>Pedro chega no apê</p>
+              <p class="event-desc">Check-in, respirar fundo e começar a sentir a energia do fim de semana.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">15h–17h</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">💻</span>Trabalhinho rápido</p>
+              <p class="event-desc">Pedro resolve os últimos pendentes do dia antes de largar tudo pelo fim de semana.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">~17h</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🛒</span>Supermercado com carinho</p>
+              <p class="event-desc">Pedro vai buscar tudinho da jantinha especial que a Emili vai preparar — com muito amor nos ingredientes.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">21h00</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🌸</span>A Emili chega! 🎉</span></p>
+              <p class="event-desc">O momento mais esperado do dia. Finalmente juntos!</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">21h–22h</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🍳</span>Jantinha da Emili</p>
+              <p class="event-desc">A chef da casa entra em ação — tudo preparado com aquele toque especial dela.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">22h+</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🎬</span>La La Land agarradinhos</p>
+              <p class="event-desc">Na cama, juntinhos, sob a luz da tela. Cinema, música e muito abraço.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DIA 17 -->
+      <div class="timeline-day reveal">
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <p class="section-label">sábado</p>
+          <h2 class="day-title">17 de Maio — O nosso dia ☀️</h2>
+        </div>
+        <div class="day-header">
+          <div class="day-line"></div>
+          <span class="day-tag">nosso dia</span>
+          <div class="day-line" style="background:linear-gradient(90deg,transparent,var(--rose))"></div>
+        </div>
+
+        <div class="events-list">
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">09h00</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">☕</span>Café da manhã juntos</p>
+              <p class="event-desc">Acordar devagar, sem pressa, e café da manhã com calma — do jeito que a gente gosta.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">manhã</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🧉</span>Caminhada no Una com chimarrão</p>
+              <p class="event-desc">Andar a dois, chimarrão na mão, conversa boa e aquele silêncio gostoso de quem se ama.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">até 12h</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🏠</span>Checkout</p>
+              <p class="event-desc">Deixar o apê em ordem e seguir a aventura pelo dia.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">tarde</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🌿</span>Almoço & passeio</p>
+              <p class="event-desc">Almoçar com calma e aproveitar a tarde passeando — sem destino fixo, só juntos.</p>
+            </div>
+          </div>
+
+          <div class="event-item">
+            <div class="event-dot"></div>
+            <span class="event-time">22h30</span>
+            <div class="event-content">
+              <p class="event-title"><span class="event-emoji">🚗</span>Pedro parte para Rio Grande</p>
+              <p class="event-desc">Com o coração cheio de memórias e muita saudade já na bagagem.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AIRBNB -->
+  <section class="place-section">
+    <p class="section-label reveal">onde vamos ficar</p>
+    <h2 class="section-title reveal">Nosso cantinho 🏡</h2>
+
+    <div class="place-card reveal">
+      <div class="place-card-top">
+        <p class="place-card-top-label">Airbnb reservado com amor</p>
+        <p class="place-card-top-title">Nosso apê especial</p>
+      </div>
+      <div class="place-card-body">
+        <div class="place-info-row">
+          <span class="place-info-icon">📅</span>
+          <div class="place-info-text">
+            <strong>Check-in</strong>
+            Sexta, 16 de Maio — a partir das 15h00
+          </div>
+        </div>
+        <div class="place-info-row">
+          <span class="place-info-icon">🕛</span>
+          <div class="place-info-text">
+            <strong>Checkout</strong>
+            Sábado, 17 de Maio — até as 12h00
+          </div>
+        </div>
+        <div class="place-info-row">
+          <span class="place-info-icon">🌹</span>
+          <div class="place-info-text">
+            <strong>Por que esse lugar?</strong>
+            Porque você merece acordar num lugar bonito ao meu lado.
+          </div>
+        </div>
+        <a class="place-btn" href="https://www.airbnb.com.br/rooms/1505374659613276202?unique_share_id=94145657-4718-4725-b406-29a458d43010&viralityEntryPoint=1&s=76" target="_blank">
+          Ver no Airbnb
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARTA DE AMOR -->
+  <section class="love-letter-section">
+    <div class="love-letter-inner reveal">
+      <div class="love-letter-deco">♡</div>
+      <p class="love-letter-tag">só pra você</p>
+      <h2 class="love-letter-title">Emili,</h2>
+      <p class="love-letter-music-ref">✦ inspirado em <em>Te Vivo</em> — Luan Santana ✦</p>
+
+      <div class="love-letter-body">
+        <p>
+          Tem uma coisa que o Luan entendeu que poucos entendem:
+          que amar de verdade não é só quando a gente tá junto.
+          É quando a pessoa <em>invade</em> tudo — o pensamento, o dia, o silêncio.
+          É quando você fecha os olhos e ela já tá lá.
+        </p>
+        <p>
+          É exatamente assim que você é pra mim, Emili.
+          Você não precisa estar do meu lado pra estar comigo.
+          Você está em tudo que eu vejo de bonito,
+          em cada momento que eu quero compartilhar com alguém,
+          no chimarrão que fica mais gostoso quando é com você,
+          na música que toca e que eu penso <em>"ela ia amar essa"</em>.
+        </p>
+        <p>
+          A gente não precisa de palavras pra dizer o quanto se adora.
+          A gente já sabe. O nosso elevador sabe. A nossa foto sabe.
+          Esse fim de semana vai saber também.
+        </p>
+        <p>
+          Porque você não é só alguém que eu amo num dia especial.
+          Você é alguém que eu carrego comigo todos os dias —
+          nos fáceis e nos difíceis, nos perto e nos longe.
+          Você virou parte de tudo que eu preciso.
+        </p>
+        <p class="love-letter-highlight">
+          Eu te amo, meu amor.<br>
+          E eu te escolho. E te vivo.<br>
+          Todos os dias.
+        </p>
+      </div>
+      <p class="love-letter-sign">— Pedro 🌹</p>
+      <div class="love-letter-deco love-letter-deco--bottom">♡</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="footer-hearts">🌸 ♡ 🌸</span>
+    <p class="footer-text">Você é minha parte favorita de toda a semana.</p>
+  </footer>
+
+  <script>
+    /* ─── FALLING PETALS ─── */
+    const canvas = document.getElementById('petals-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const PETALS = [];
+    const PETAL_COUNT = 22;
+    const SHAPES = ['🌸','🌷','✿','❀'];
+
+    for (let i = 0; i < PETAL_COUNT; i++) {
+      PETALS.push({
+        x:     Math.random() * window.innerWidth,
+        y:     Math.random() * -window.innerHeight,
+        size:  10 + Math.random() * 14,
+        speed: 0.4 + Math.random() * 0.6,
+        drift: (Math.random() - 0.5) * 0.5,
+        rot:   Math.random() * Math.PI * 2,
+        rotS:  (Math.random() - 0.5) * 0.03,
+        emoji: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+        opacity: 0.25 + Math.random() * 0.45,
+      });
+    }
+
+    function drawPetals() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      PETALS.forEach(p => {
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.font = `${p.size}px serif`;
+        ctx.fillText(p.emoji, -p.size/2, p.size/2);
+        ctx.restore();
+
+        p.y   += p.speed;
+        p.x   += p.drift;
+        p.rot += p.rotS;
+
+        if (p.y > window.innerHeight + 30) {
+          p.y = -20;
+          p.x = Math.random() * window.innerWidth;
+        }
+      });
+      requestAnimationFrame(drawPetals);
+    }
+    drawPetals();
+
+    /* ─── COUNTDOWN ─── */
+    // 16 de maio de 2026, às 15:00 no horário de Brasília (UTC-3)
+    const TARGET = new Date('2026-05-16T15:00:00-03:00');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateCountdown() {
+      const now  = new Date();
+      const diff = TARGET.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        document.getElementById('countdown-grid').style.display = 'none';
+        document.getElementById('cd-arrived').style.display     = 'block';
+        return;
+      }
+
+      const totalSecs = Math.floor(diff / 1000);
+      const days  = Math.floor(totalSecs / 86400);
+      const hours = Math.floor((totalSecs % 86400) / 3600);
+      const mins  = Math.floor((totalSecs % 3600) / 60);
+      const secs  = totalSecs % 60;
+
+      document.getElementById('cd-days').textContent  = pad(days);
+      document.getElementById('cd-hours').textContent = pad(hours);
+      document.getElementById('cd-mins').textContent  = pad(mins);
+      document.getElementById('cd-secs').textContent  = pad(secs);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* ─── SCROLL REVEAL ─── */
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
